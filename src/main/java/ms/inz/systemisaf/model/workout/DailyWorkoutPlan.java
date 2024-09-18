@@ -12,7 +12,7 @@ public class DailyWorkoutPlan {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id")
-        private Long id;
+        private Long id; //id
 
         @Enumerated(EnumType.STRING)
         @Column(name = "day_of_week", nullable = false)
