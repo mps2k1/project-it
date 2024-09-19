@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+    <changeSet id="1" author="ms">
+        <createTable tableName="daily_workout_plan">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="day_of_week" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="ms">
+        <createTable tableName="exercise">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="instruction" type="VARCHAR(255)" />
+            <column name="repetitions" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="sets" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="muscle_group" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="ms">
+        <createTable tableName="weekly_workout_plan">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="type_of_workout" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="is_active" type="BOOLEAN">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="ms">
+        <createTable tableName="workout_session">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="5" author="ms">
+        <addColumn tableName="daily_workout_plan">
+            <column name="weekly_workout_plan_id" type="BIGINT"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="daily_workout_plan"
+                                 baseColumnNames="weekly_workout_plan_id"
+                                 referencedTableName="weekly_workout_plan"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_weekly_to_daily"/>
+    </changeSet>
+    <changeSet id="6" author="ms">
+        <addColumn tableName="workout_session">
+            <column name="daily_workout_plan_id" type="BIGINT"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="workout_session"
+                                 baseColumnNames="daily_workout_plan_id"
+                                 referencedTableName="daily_workout_plan"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_daily_to_session"/>
+    </changeSet>
+    <changeSet id="7" author="ms">
+        <addColumn tableName="exercise">
+            <column name="workout_session_id" type="BIGINT"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="exercise"
+                                 baseColumnNames="workout_session_id"
+                                 referencedTableName="workout_session"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_session_to_exercise"/>
+    </changeSet>
+
+
+</databaseChangeLog>
