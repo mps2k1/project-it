@@ -2,7 +2,7 @@ package ms.inz.systemisaf.model.workout;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ms.inz.systemisaf.enums.MuscleGroup;
+import ms.inz.systemisaf.enums.MuscleGroupEnum;
 @Getter
 @Setter
 @Entity
@@ -27,5 +27,5 @@ public class Exercise {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "muscle_group", nullable = false)
-    private MuscleGroup muscleGroup; // Grupa mięśniowa
+    private MuscleGroupEnum muscleGroup; // Grupa mięśniowa
 }

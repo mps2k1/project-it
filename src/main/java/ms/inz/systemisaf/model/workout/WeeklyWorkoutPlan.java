@@ -2,7 +2,7 @@ package ms.inz.systemisaf.model.workout;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ms.inz.systemisaf.enums.TypeOfWorkout;
+import ms.inz.systemisaf.enums.TypeOfWorkoutEnum;
 import java.util.List;
 @Getter
 @Setter
@@ -20,7 +20,7 @@ public class WeeklyWorkoutPlan {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type_of_workout", nullable = false)
-    private TypeOfWorkout typeOfWorkout;
+    private TypeOfWorkoutEnum typeOfWorkout;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;

@@ -1,7 +1,7 @@
 package ms.inz.systemisaf.model.food;
-import ms.inz.systemisaf.enums.DietType;
+import ms.inz.systemisaf.enums.DietTypeEnum;
 public class Meal {
     private Long id;
     private String name;
-    private DietType dietType;
+    private DietTypeEnum dietType;
 }
