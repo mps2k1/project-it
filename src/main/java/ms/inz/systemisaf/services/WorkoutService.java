@@ -3,7 +3,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class WorkoutService {
 
-    //generowanie treningu wedlug preferencji - liczba jednostek (3-5), typ treningu
+    //split - 5 dni
+
+    //fbw - 5 dni
+
+    //upper-lower - 4 dni
 
     //zapisanie aktualnego
 }

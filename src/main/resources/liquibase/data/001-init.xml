@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1" author="author">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="weight" type="DECIMAL(10, 2)"/>
+            <column name="height" type="DECIMAL(10, 2)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="author">
+        <createTable tableName="weekly_workout_plan">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type_of_workout" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="weekly_workout_plan"
+                                 baseColumnNames="user_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_weekly_workout_plan_user"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="3" author="author">
+        <createTable tableName="daily_workout_plan">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="day_of_week" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="weekly_workout_plan_id" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="daily_workout_plan"
+                                 baseColumnNames="weekly_workout_plan_id"
+                                 referencedTableName="weekly_workout_plan"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_daily_workout_plan_weekly"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="4" author="author">
+        <createTable tableName="workout_session">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="daily_workout_plan_id" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="workout_session"
+                                 baseColumnNames="daily_workout_plan_id"
+                                 referencedTableName="daily_workout_plan"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_workout_session_daily"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="5" author="author">
+        <createTable tableName="exercise">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="instruction" type="TEXT"/>
+            <column name="repetitions" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sets" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="muscle_group" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="workout_session_id" type="BIGINT"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="exercise"
+                                 baseColumnNames="workout_session_id"
+                                 referencedTableName="workout_session"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_exercise_workout_session"
+                                 onDelete="CASCADE"/>
+    </changeSet>
+
+    <changeSet id="6" author="author">
+        <addColumn tableName="users">
+            <column name="active_workout_plan_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="users"
+                                 baseColumnNames="active_workout_plan_id"
+                                 referencedTableName="weekly_workout_plan"
+                                 referencedColumnNames="id"
+                                 constraintName="fk_users_active_workout_plan"/>
+    </changeSet>
+
+</databaseChangeLog>

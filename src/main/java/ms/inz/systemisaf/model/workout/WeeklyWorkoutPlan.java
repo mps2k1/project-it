@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import ms.inz.systemisaf.enums.TypeOfWorkoutEnum;
+import ms.inz.systemisaf.model.User;
 import java.util.List;
 @Getter
 @Setter
@@ -21,6 +22,9 @@ public class WeeklyWorkoutPlan {
     @Enumerated(EnumType.STRING)
     @Column(name = "type_of_workout", nullable = false)
     private TypeOfWorkoutEnum typeOfWorkout;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user; // Każdy plan należy do jednego użytkownika
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
