@@ -1,7 +1,11 @@
 package ms.inz.systemisaf.model;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import ms.inz.systemisaf.model.workout.WeeklyWorkoutPlan;
 import java.util.List;
+@Getter
+@Setter
 @Entity
 @Table(name = "users")
 public class User {
