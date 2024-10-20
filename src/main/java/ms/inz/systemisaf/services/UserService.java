@@ -10,5 +10,11 @@ public class UserService {
 
     //aktualizacja pomiarow
 
+    //historia treningow
+
+    //historia diet
+
+
+
 
 }
