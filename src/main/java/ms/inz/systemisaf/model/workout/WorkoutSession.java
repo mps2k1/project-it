@@ -13,7 +13,11 @@ public class WorkoutSession {
     @Column(name = "id")
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "workout_session_id")
+    @ManyToMany
+    @JoinTable(
+            name = "workout_session_exercises",
+            joinColumns = @JoinColumn(name = "workout_session_id"),
+            inverseJoinColumns = @JoinColumn(name = "exercise_id")
+    )
     private List<Exercise> exercises;
 }

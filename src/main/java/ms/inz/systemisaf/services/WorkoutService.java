@@ -31,21 +31,18 @@ public class WorkoutService {
     @Transactional
     public WeeklyWorkoutPlanDto createSplitWorkout(Long userId) {
         WeeklyWorkoutPlan workoutPlan = createWorkoutPlan(userId, TypeOfWorkoutEnum.SPLIT, 4);
-        setActiveWorkoutPlan(userId, workoutPlan.getId());
         return WorkoutMapper.weeklyWorkoutPlanToDto(workoutPlan);
     }
 
     @Transactional
     public WeeklyWorkoutPlanDto createFBWWorkout(Long userId) {
         WeeklyWorkoutPlan workoutPlan = createWorkoutPlan(userId, TypeOfWorkoutEnum.FBW, 5);
-        setActiveWorkoutPlan(userId, workoutPlan.getId());
         return WorkoutMapper.weeklyWorkoutPlanToDto(workoutPlan);
     }
 
     @Transactional
     public WeeklyWorkoutPlanDto createUpperLowerWorkout(Long userId) {
         WeeklyWorkoutPlan workoutPlan = createWorkoutPlan(userId, TypeOfWorkoutEnum.UPPERLOWER, 4);
-        setActiveWorkoutPlan(userId, workoutPlan.getId());
         return WorkoutMapper.weeklyWorkoutPlanToDto(workoutPlan);
     }
 
@@ -233,18 +230,5 @@ public class WorkoutService {
 
         userRepository.save(user);
         weeklyWorkoutPlanRepository.save(newActiveWorkoutPlan);
-    }
-    @Transactional
-    public WeeklyWorkoutPlanDto getActiveWorkoutPlan(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        WeeklyWorkoutPlan activePlan = user.getActiveWorkoutPlan();
-
-        if (activePlan == null) {
-            throw new IllegalArgumentException("User has no active workout plan.");
-        }
-
-        return WorkoutMapper.weeklyWorkoutPlanToDto(activePlan);
     }
 }

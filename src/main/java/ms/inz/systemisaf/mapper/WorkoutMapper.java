@@ -135,24 +135,5 @@ public class WorkoutMapper {
 
         return weeklyWorkoutPlan;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 

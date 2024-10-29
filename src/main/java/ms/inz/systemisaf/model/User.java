@@ -2,6 +2,7 @@ package ms.inz.systemisaf.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ms.inz.systemisaf.model.meal.WeeklyMealPlan;
 import ms.inz.systemisaf.model.workout.WeeklyWorkoutPlan;
 import java.util.List;
 @Getter
@@ -12,28 +13,31 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
 
     @Column(name = "username", nullable = false, unique = true)
-    private String username; // Unikalna nazwa użytkownika
+    private String username;
 
     @Column(name = "email", nullable = false, unique = true)
-    private String email; // Unikalny email
+    private String email;
 
     @Column(name = "password", nullable = false)
-    private String password; // Hasło użytkownika
-
-    @Column(name = "weight")
-    private Double weight; // Waga użytkownika w kilogramach
-
-    @Column(name = "height")
-    private Double height; // Wzrost użytkownika w centymetrach
+    private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WeeklyWorkoutPlan> workoutPlans; // Lista wszystkich planów treningowych użytkownika
+    private List<Measurement> measurements;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WeeklyWorkoutPlan> workoutPlans;
 
     @OneToOne
     @JoinColumn(name = "active_workout_plan_id")
-    private WeeklyWorkoutPlan activeWorkoutPlan; // Jeden aktywny plan treningowy
+    private WeeklyWorkoutPlan activeWorkoutPlan;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WeeklyMealPlan> weeklyMealPlans;
+
+    @OneToOne
+    @JoinColumn(name = "active_meal_plan_id")
+    private WeeklyMealPlan activeMealPlan;  // Dodane aktywny plan posiłków
 }

@@ -27,5 +27,5 @@ public class WeeklyWorkoutPlan {
     private User user; // Każdy plan należy do jednego użytkownika
 
     @Column(name = "is_active", nullable = false)
-    private boolean isActive;
+    private boolean isActive = false; // Domyślna wartość false
 }

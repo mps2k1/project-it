@@ -2,8 +2,7 @@ package ms.inz.systemisaf.enums;
 
 public enum DietTypeEnum {
     HIGH_PROTEIN("High Protein"),  // Wysokobiałkowa
-    KETO("Keto"),                  // Keto
-    VEGAN("Vegan");                // Wegan
+    KETO("Keto");
 
     private final String displayName;
 

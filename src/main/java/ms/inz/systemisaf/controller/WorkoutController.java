@@ -37,9 +37,5 @@ public class WorkoutController {
         workoutService.setActiveWorkoutPlan(userId, workoutPlanId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    @GetMapping("/active/{userId}")
-    public ResponseEntity<WeeklyWorkoutPlanDto> getActiveWorkoutPlan(@PathVariable Long userId) {
-        WeeklyWorkoutPlanDto activePlan = workoutService.getActiveWorkoutPlan(userId);
-        return new ResponseEntity<>(activePlan, HttpStatus.OK);
-    }
+
 }
