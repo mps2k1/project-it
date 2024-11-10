@@ -1,8 +1,10 @@
 package ms.inz.systemisaf.controller;
+import ms.inz.systemisaf.config.CustomUserDetails;
 import ms.inz.systemisaf.dto.WeeklyWorkoutPlanDto;
 import ms.inz.systemisaf.services.WorkoutService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/workouts")
@@ -14,28 +16,47 @@ public class WorkoutController {
         this.workoutService = workoutService;
     }
 
-    @PostMapping("/split/{userId}")
-    public ResponseEntity<WeeklyWorkoutPlanDto> createSplitWorkout(@PathVariable Long userId) {
-        WeeklyWorkoutPlanDto workoutPlanDto = workoutService.createSplitWorkout(userId);
-        return new ResponseEntity<>(workoutPlanDto, HttpStatus.CREATED);
+    @PostMapping("/split")
+    public ResponseEntity<Object> createSplitWorkout(Authentication authentication) {
+        try {
+            Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
+            WeeklyWorkoutPlanDto workoutPlanDto = workoutService.createSplitWorkout(userId);
+            return new ResponseEntity<>(workoutPlanDto, HttpStatus.CREATED);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
     }
 
-    @PostMapping("/fbw/{userId}")
-    public ResponseEntity<WeeklyWorkoutPlanDto> createFBWWorkout(@PathVariable Long userId) {
-        WeeklyWorkoutPlanDto workoutPlanDto = workoutService.createFBWWorkout(userId);
-        return new ResponseEntity<>(workoutPlanDto, HttpStatus.CREATED);
+    @PostMapping("/fbw")
+    public ResponseEntity<Object> createFBWWorkout(Authentication authentication) {
+        try {
+            Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
+            WeeklyWorkoutPlanDto workoutPlanDto = workoutService.createFBWWorkout(userId);
+            return new ResponseEntity<>(workoutPlanDto, HttpStatus.CREATED);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
     }
 
-    @PostMapping("/upper-lower/{userId}")
-    public ResponseEntity<WeeklyWorkoutPlanDto> createUpperLowerWorkout(@PathVariable Long userId) {
-        WeeklyWorkoutPlanDto workoutPlanDto = workoutService.createUpperLowerWorkout(userId);
-        return new ResponseEntity<>(workoutPlanDto, HttpStatus.CREATED);
+    @PostMapping("/upper-lower")
+    public ResponseEntity<Object> createUpperLowerWorkout(Authentication authentication) {
+        try {
+            Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
+            WeeklyWorkoutPlanDto workoutPlanDto = workoutService.createUpperLowerWorkout(userId);
+            return new ResponseEntity<>(workoutPlanDto, HttpStatus.CREATED);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
     }
 
     @PutMapping("/set-active")
-    public ResponseEntity<Void> setActiveWorkoutPlan(@RequestParam Long userId, @RequestParam Long workoutPlanId) {
-        workoutService.setActiveWorkoutPlan(userId, workoutPlanId);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<Object> setActiveWorkoutPlan(Authentication authentication, @RequestParam Long workoutPlanId) {
+        try {
+            Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
+            workoutService.setActiveWorkoutPlan(userId, workoutPlanId);
+            return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
     }
-
 }

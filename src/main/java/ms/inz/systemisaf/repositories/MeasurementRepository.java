@@ -4,8 +4,11 @@ import ms.inz.systemisaf.model.Measurement;
 import ms.inz.systemisaf.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MeasurementRepository extends JpaRepository<Measurement,Long> {
     Optional<Measurement> findTopByUserOrderByCreatedAtDesc(User user);
+
+    List<Measurement> findByUserOrderByCreatedAtDesc(User user);
 }

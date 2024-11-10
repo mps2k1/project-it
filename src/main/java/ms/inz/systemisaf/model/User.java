@@ -39,5 +39,5 @@ public class User {
 
     @OneToOne
     @JoinColumn(name = "active_meal_plan_id")
-    private WeeklyMealPlan activeMealPlan;  // Dodane aktywny plan posiłków
+    private WeeklyMealPlan activeMealPlan;  //Dodane aktywny plan posiłków
 }

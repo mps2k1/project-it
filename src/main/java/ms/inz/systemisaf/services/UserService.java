@@ -14,6 +14,9 @@ import ms.inz.systemisaf.repositories.MeasurementRepository;
 import ms.inz.systemisaf.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService {
 
@@ -25,8 +28,7 @@ public class UserService {
         this.measurementRepository = measurementRepository;
     }
 
-    // Zapis nowego pomiaru użytkownika
-    @Transactional
+     @Transactional
     public void addMeasurement(Long userId, Double weight, Double height) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -42,16 +44,14 @@ public class UserService {
         measurementRepository.save(measurement);
     }
 
-    // Obliczanie BMI (Body Mass Index)
-    private Double calculateBMI(Double weight, Double height) {
+     private Double calculateBMI(Double weight, Double height) {
         if (height == null || weight == null || height <= 0) {
             throw new IllegalArgumentException("Invalid height or weight");
         }
         return weight / (height * height);
     }
 
-    // Pobieranie aktualnych pomiarów użytkownika
-    @Transactional
+     @Transactional
     public MeasurementDto getCurrentMeasurement(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -61,8 +61,8 @@ public class UserService {
 
         return UserMapper.measurementToDto(measurement);
     }
-    // Pobieranie aktywnego planu treningowego
-    @Transactional
+
+     @Transactional
     public WeeklyWorkoutPlanDto getActiveWorkoutPlan(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -76,8 +76,24 @@ public class UserService {
         return WorkoutMapper.weeklyWorkoutPlanToDto(activePlan);
     }
 
-    // Pobieranie aktywnego planu posiłków
     @Transactional
+    public List<MeasurementDto> getAllMeasurements(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        List<Measurement> measurements = measurementRepository.findByUserOrderByCreatedAtDesc(user);
+
+        if (measurements.isEmpty()) {
+            throw new IllegalArgumentException("No measurements found for this user");
+        }
+
+        return measurements.stream()
+                .map(UserMapper::measurementToDto)
+                .collect(Collectors.toList());
+    }
+
+
+     @Transactional
     public WeeklyMealPlanDto getActiveMealPlan(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
@@ -91,13 +107,11 @@ public class UserService {
         return MealMapper.weeklyMealPlanToDto(activeMealPlan);
     }
 
-    // Aktualizacja pomiarów użytkownika
-    @Transactional
+     @Transactional
     public void updateMeasurement(Long userId, Double weight, Double height) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        // Dodajemy nowy pomiar użytkownika
-        addMeasurement(userId, weight, height);
+         addMeasurement(userId, weight, height);
     }
 }

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import ms.inz.systemisaf.model.User;
 import java.util.List;
-
 @Getter
 @Setter
 @Entity

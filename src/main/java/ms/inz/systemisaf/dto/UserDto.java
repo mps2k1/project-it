@@ -13,10 +13,10 @@ public class UserDto {
     private String email;
     private String password;
 
-    private Long activeWorkoutPlanId; // ID aktywnego planu treningowego
-    private Long activeMealPlanId; // ID aktywnego planu posiłków
+    private Long activeWorkoutPlanId;
+    private Long activeMealPlanId;
 
-    private List<Long> measurementIds; // ID pomiarów użytkownika
-    private List<Long> workoutPlanIds; // ID wszystkich planów treningowych użytkownika
-    private List<Long> weeklyMealPlanIds; // ID wszystkich planów posiłków użytkownika
+    private List<Long> measurementIds;
+    private List<Long> workoutPlanIds;
+    private List<Long> weeklyMealPlanIds;
 }

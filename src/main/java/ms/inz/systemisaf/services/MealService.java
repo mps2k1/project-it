@@ -1,5 +1,4 @@
 package ms.inz.systemisaf.services;
-
 import jakarta.transaction.Transactional;
 import ms.inz.systemisaf.dto.WeeklyMealPlanDto;
 import ms.inz.systemisaf.enums.DietTypeEnum;
@@ -14,10 +13,8 @@ import ms.inz.systemisaf.repositories.MealRepository;
 import ms.inz.systemisaf.repositories.UserRepository;
 import ms.inz.systemisaf.repositories.WeeklyMealPlanRepository;
 import org.springframework.stereotype.Service;
-
 import java.time.DayOfWeek;
 import java.util.*;
-
 @Service
 public class MealService {
 

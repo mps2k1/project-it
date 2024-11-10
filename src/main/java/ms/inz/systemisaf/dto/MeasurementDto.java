@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class MeasurementDto {
 
     private Long id;
-    private Long userId;       // Odniesienie do użytkownika przez ID, zamiast pełnej encji
+    private Long userId;
     private Double weight;
     private Double height;
     private Double bmi;

@@ -14,18 +14,18 @@ public class Exercise {
     private Long id;
 
     @Column(name = "name", nullable = false)
-    private String name; // Nazwa ćwiczenia (np. "Przysiady", "Podciąganie")
+    private String name;
 
     @Column(name = "instruction")
     private String instruction;
 
     @Column(name = "repetitions", nullable = false)
-    private int repetitions; // Liczba powtórzeń
+    private int repetitions;
 
     @Column(name = "sets", nullable = false)
-    private int sets; // Liczba serii
+    private int sets;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "muscle_group", nullable = false)
-    private MuscleGroupEnum muscleGroup; // Grupa mięśniowa
+    private MuscleGroupEnum muscleGroup;
 }
