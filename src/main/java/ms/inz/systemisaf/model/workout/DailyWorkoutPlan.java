@@ -12,13 +12,13 @@ public class DailyWorkoutPlan {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id")
-        private Long id; //id
+        private Long id;
 
         @Enumerated(EnumType.STRING)
         @Column(name = "day_of_week", nullable = false)
-        private DayOfWeek dayOfWeek; // Dzień tygodnia
+        private DayOfWeek dayOfWeek;
 
         @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
         @JoinColumn(name = "daily_workout_plan_id")
-        private List<WorkoutSession> sessions; // Lista sesji treningowych dla danego dnia
+        private List<WorkoutSession> sessions;
 }
