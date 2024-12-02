@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="1-create-users-table" author="systemisaf">
+        <createTable tableName="users">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="trainer_id" type="BIGINT"/>
+            <column name="active_workout_plan_id" type="BIGINT"/>
+            <column name="active_meal_plan_id" type="BIGINT"/>
+            <column name="assigned_workout_plan_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2-create-weekly-workout-plan-table" author="systemisaf">
+        <createTable tableName="weekly_workout_plan">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type_of_workout" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3-create-daily-workout-plan-table" author="systemisaf">
+        <createTable tableName="daily_workout_plan">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="day_of_week" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="weekly_workout_plan_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4-create-workout-session-table" author="systemisaf">
+        <createTable tableName="workout_session">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5-create-exercise-table" author="systemisaf">
+        <createTable tableName="exercise">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="instruction" type="TEXT"/>
+            <column name="repetitions" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sets" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="muscle_group" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="6-create-meals-table" author="systemisaf">
+        <createTable tableName="meals">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="meal_of_the_day" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="diet_type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="7-create-daily-meal-plans-table" author="systemisaf">
+        <createTable tableName="daily_meal_plans">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="day_of_week" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="8-create-meal-sessions-table" author="systemisaf">
+        <createTable tableName="meal_sessions">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="9-create-weekly-meal-plan-table" author="systemisaf">
+        <createTable tableName="weekly_meal_plans">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="10-create-friend-requests-table" author="systemisaf">
+        <createTable tableName="friend_requests">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="sender_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="receiver_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="friend_requests" baseColumnNames="sender_id"
+                referencedTableName="users" referencedColumnNames="id"
+                constraintName="fk_friend_requests_sender"/>
+        <addForeignKeyConstraint
+                baseTableName="friend_requests" baseColumnNames="receiver_id"
+                referencedTableName="users" referencedColumnNames="id"
+                constraintName="fk_friend_requests_receiver"/>
+    </changeSet>
+
+    <changeSet id="11-create-measurements-table" author="systemisaf">
+        <createTable tableName="measurements">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="weight" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="height" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bmi" type="DOUBLE"/>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="measurements" baseColumnNames="user_id"
+                referencedTableName="users" referencedColumnNames="id"
+                constraintName="fk_measurements_user"/>
+    </changeSet>
+    <changeSet id="12-create-workout-session-exercises_table" author="systemisaf">
+        <createTable tableName="workout_session_exercises">
+            <column name="workout_session_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="exercise_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="workout_session_exercises"
+                                 baseColumnNames="workout_session_id"
+                                 constraintName="fk_workout_session_exercises_session"
+                                 referencedTableName="workout_session"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="workout_session_exercises"
+                                 baseColumnNames="exercise_id"
+                                 constraintName="fk_workout_session_exercises_exercise"
+                                 referencedTableName="exercise"
+                                 referencedColumnNames="id"/>
+
+        <addPrimaryKey tableName="workout_session_exercises"
+                       columnNames="workout_session_id, exercise_id"
+                       constraintName="pk_workout_session_exercises"/>
+    </changeSet>
+    <changeSet id="13-create-meal-session-meals-table" author="ms">
+        <createTable tableName="meal_session_meals">
+            <column name="meal_session_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="meal_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="meal_session_meals"
+                                 baseColumnNames="meal_session_id"
+                                 constraintName="fk_meal_session_meals_session"
+                                 referencedTableName="meal_sessions"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="meal_session_meals"
+                                 baseColumnNames="meal_id"
+                                 constraintName="fk_meal_session_meals_meal"
+                                 referencedTableName="meals"
+                                 referencedColumnNames="id"/>
+
+        <addPrimaryKey tableName="meal_session_meals"
+                       columnNames="meal_session_id, meal_id"
+                       constraintName="pk_meal_session_meals"/>
+    </changeSet>
+    <changeSet id="14-create-user-friends-table" author="systemisaf">
+        <createTable tableName="user_friends">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="friend_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="user_friends"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_user_friends_user"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="user_friends"
+                                 baseColumnNames="friend_id"
+                                 constraintName="fk_user_friends_friend"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <addPrimaryKey tableName="user_friends"
+                       columnNames="user_id, friend_id"
+                       constraintName="pk_user_friends"/>
+    </changeSet>
+    <changeSet id="15-add-daily-workout-plan-id" author="systemisaf">
+        <addColumn tableName="workout_session">
+            <column name="daily_workout_plan_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint
+                baseTableName="workout_session"
+                baseColumnNames="daily_workout_plan_id"
+                referencedTableName="daily_workout_plan"
+                referencedColumnNames="id"
+                constraintName="fk_workout_session_daily_plan"/>
+    </changeSet>
+    <changeSet id="16-create-custom-workout-plan-table" author="systemisaf">
+        <createTable tableName="custom_workout_plan">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="plan_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="custom_workout_plan"
+                baseColumnNames="user_id"
+                referencedTableName="users"
+                referencedColumnNames="id"
+                constraintName="fk_custom_workout_plan_user_id"/>
+    </changeSet>
+
+    <changeSet id="17-create-custom-daily-workout-plan-table" author="systemisaf">
+        <createTable tableName="custom_daily_workout_plan">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="day_of_week" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="custom_workout_plan_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="custom_daily_workout_plan"
+                baseColumnNames="custom_workout_plan_id"
+                referencedTableName="custom_workout_plan"
+                referencedColumnNames="id"
+                constraintName="fk_custom_daily_workout_plan_workout_plan_id"/>
+    </changeSet>
+
+    <changeSet id="18-create-custom-workout-session-table" author="systemisaf">
+        <createTable tableName="custom_workout_session">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="custom_daily_workout_plan_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="custom_workout_session"
+                baseColumnNames="custom_daily_workout_plan_id"
+                referencedTableName="custom_daily_workout_plan"
+                referencedColumnNames="id"
+                constraintName="fk_custom_workout_session_daily_workout_plan_id"/>
+    </changeSet>
+
+    <changeSet id="19-create-custom-exercise-table" author="systemisaf">
+        <createTable tableName="custom_exercise">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="instruction" type="TEXT"/>
+            <column name="repetitions" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sets" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="muscle_group" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="custom_workout_session_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="custom_exercise"
+                baseColumnNames="custom_workout_session_id"
+                referencedTableName="custom_workout_session"
+                referencedColumnNames="id"
+                constraintName="fk_custom_exercise_workout_session_id"/>
+    </changeSet>
+    <changeSet id="20-add-assigned-custom-workout-plan-id" author="systemisaf">
+        <addColumn tableName="users">
+            <column name="assigned_custom_workout_plan_id" type="BIGINT"/>
+        </addColumn>
+        <addForeignKeyConstraint
+                baseTableName="users"
+                baseColumnNames="assigned_custom_workout_plan_id"
+                referencedTableName="custom_workout_plan"
+                referencedColumnNames="id"
+                constraintName="fk_users_assigned_custom_workout_plan_id"/>
+    </changeSet>
+</databaseChangeLog>
