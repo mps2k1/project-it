@@ -2,9 +2,13 @@ package ms.inz.systemisaf.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ms.inz.systemisaf.enums.RoleEnum;
+import ms.inz.systemisaf.model.customworkout.CustomWorkoutPlan;
 import ms.inz.systemisaf.model.meal.WeeklyMealPlan;
 import ms.inz.systemisaf.model.workout.WeeklyWorkoutPlan;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 @Getter
 @Setter
 @Entity
@@ -24,6 +28,10 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RoleEnum role;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Measurement> measurements;
 
@@ -39,5 +47,25 @@ public class User {
 
     @OneToOne
     @JoinColumn(name = "active_meal_plan_id")
-    private WeeklyMealPlan activeMealPlan;  //Dodane aktywny plan posiłków
+    private WeeklyMealPlan activeMealPlan;
+
+    @OneToOne
+    @JoinColumn(name = "assigned_workout_plan_id")
+    private CustomWorkoutPlan assignedWorkoutPlan;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_friends",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "friend_id")
+    )
+
+    private Set<User> friends = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "trainer_id")
+    private User trainer;
+
+
+    @OneToMany(mappedBy = "trainer")
+    private Set<User> trainees = new HashSet<>();
 }

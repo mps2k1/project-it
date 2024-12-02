@@ -1,14 +1,20 @@
 package ms.inz.systemisaf.services;
 import jakarta.transaction.Transactional;
-import ms.inz.systemisaf.dto.WeeklyWorkoutPlanDto;
+import ms.inz.systemisaf.dto.*;
 import ms.inz.systemisaf.enums.MuscleGroupEnum;
 import ms.inz.systemisaf.enums.TypeOfWorkoutEnum;
+import ms.inz.systemisaf.mapper.CustomMapper;
 import ms.inz.systemisaf.mapper.WorkoutMapper;
 import ms.inz.systemisaf.model.User;
+import ms.inz.systemisaf.model.customworkout.CustomDailyWorkoutPlan;
+import ms.inz.systemisaf.model.customworkout.CustomExercise;
+import ms.inz.systemisaf.model.customworkout.CustomWorkoutPlan;
+import ms.inz.systemisaf.model.customworkout.CustomWorkoutSession;
 import ms.inz.systemisaf.model.workout.DailyWorkoutPlan;
 import ms.inz.systemisaf.model.workout.Exercise;
 import ms.inz.systemisaf.model.workout.WeeklyWorkoutPlan;
 import ms.inz.systemisaf.model.workout.WorkoutSession;
+import ms.inz.systemisaf.repositories.CustomWorkoutPlanRepository;
 import ms.inz.systemisaf.repositories.ExerciseRepository;
 import ms.inz.systemisaf.repositories.UserRepository;
 import ms.inz.systemisaf.repositories.WeeklyWorkoutPlanRepository;
@@ -20,12 +26,14 @@ public class WorkoutService {
     private final ExerciseRepository exerciseRepository;
     private final WeeklyWorkoutPlanRepository weeklyWorkoutPlanRepository;
     private final UserRepository userRepository;
+    private final CustomWorkoutPlanRepository customWorkoutPlanRepository;
     public WorkoutService(ExerciseRepository exerciseRepository,
                           WeeklyWorkoutPlanRepository weeklyWorkoutPlanRepository,
-                          UserRepository userRepository) {
+                          UserRepository userRepository, CustomWorkoutPlanRepository customWorkoutPlanRepository) {
         this.exerciseRepository = exerciseRepository;
         this.weeklyWorkoutPlanRepository = weeklyWorkoutPlanRepository;
         this.userRepository = userRepository;
+        this.customWorkoutPlanRepository = customWorkoutPlanRepository;
     }
 
     @Transactional
@@ -231,4 +239,72 @@ public class WorkoutService {
         userRepository.save(user);
         weeklyWorkoutPlanRepository.save(newActiveWorkoutPlan);
     }
+    @Transactional
+    public CustomWorkoutPlanDto assignWorkout(CustomWorkoutPlanRequestDto requestDto, Long trainerId) {
+        User trainer = userRepository.findById(trainerId)
+                .orElseThrow(() -> new IllegalArgumentException("Trainer not found"));
+
+        User user = userRepository.findByUsername(requestDto.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        if (!trainer.getFriends().contains(user)) {
+            throw new IllegalArgumentException("You can only assign plans to your friends");
+        }
+
+        CustomWorkoutPlan customWorkoutPlan = new CustomWorkoutPlan();
+        customWorkoutPlan.setPlanName(requestDto.getPlanName());
+        customWorkoutPlan.setUser(user);
+
+        List<CustomDailyWorkoutPlan> dailyPlans = requestDto.getWorkoutDays().stream()
+                .map(dayDto -> {
+                    CustomDailyWorkoutPlan dailyPlan = new CustomDailyWorkoutPlan();
+                    dailyPlan.setDayOfWeek(dayDto.getDayOfWeek());
+                    dailyPlan.setCustomWorkoutPlan(customWorkoutPlan);
+
+                    List<CustomWorkoutSession> sessions = new ArrayList<>();
+                    CustomWorkoutSession session = new CustomWorkoutSession();
+
+                    List<CustomExercise> exercises = dayDto.getExercises().stream()
+                            .map(exerciseDto -> {
+                                CustomExercise exercise = new CustomExercise();
+                                exercise.setName(exerciseDto.getName());
+                                exercise.setInstruction(exerciseDto.getInstruction());
+                                exercise.setRepetitions(exerciseDto.getRepetitions());
+                                exercise.setSets(exerciseDto.getSets());
+                                exercise.setMuscleGroup(String.valueOf(exerciseDto.getMuscleGroup()));
+                                exercise.setCustomWorkoutSession(session);
+                                return exercise;
+                            }).toList();
+
+                    session.setExercises(exercises);
+                    session.setCustomDailyWorkoutPlan(dailyPlan);
+                    sessions.add(session);
+
+                    dailyPlan.setSessions(sessions);
+                    return dailyPlan;
+                }).toList();
+
+        customWorkoutPlan.setDailyWorkoutPlans(dailyPlans);
+
+        CustomWorkoutPlan savedPlan = customWorkoutPlanRepository.save(customWorkoutPlan);
+
+        user.setAssignedWorkoutPlan(savedPlan);
+        userRepository.save(user);
+        return CustomMapper.toDto(savedPlan);
+    }
+
+    @Transactional
+    public CustomWorkoutPlanDto getAssignedWorkout(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        CustomWorkoutPlan assignedWorkoutPlan = user.getAssignedWorkoutPlan();
+
+        if (assignedWorkoutPlan == null) {
+            throw new IllegalArgumentException("No assigned custom workout plan found for this user");
+        }
+
+        return CustomMapper.toDto(assignedWorkoutPlan);
+    }
+
 }

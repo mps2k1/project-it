@@ -70,7 +70,7 @@ public class WorkoutMapper {
         dailyWorkoutPlanDto.setDayOfWeek(dailyWorkoutPlan.getDayOfWeek());
 
         List<WorkoutSessionDto> sessionDtos = dailyWorkoutPlan.getSessions().stream()
-                .map(WorkoutMapper::workoutSessionToDto) // Use WorkoutMapper to map WorkoutSession to WorkoutSessionDto
+                .map(WorkoutMapper::workoutSessionToDto)
                 .collect(Collectors.toList());
 
         dailyWorkoutPlanDto.setSessions(sessionDtos);
@@ -127,8 +127,7 @@ public class WorkoutMapper {
         weeklyWorkoutPlan.setTypeOfWorkout(weeklyWorkoutPlanDto.getTypeOfWorkout());
         weeklyWorkoutPlan.setActive(weeklyWorkoutPlanDto.isActive());
 
-        // Convert the list of DailyWorkoutPlanDtos to DailyWorkoutPlans
-        List<DailyWorkoutPlan> dailyWorkoutPlans = weeklyWorkoutPlanDto.getDailyWorkoutPlans().stream()
+         List<DailyWorkoutPlan> dailyWorkoutPlans = weeklyWorkoutPlanDto.getDailyWorkoutPlans().stream()
                 .map(WorkoutMapper::dailyWorkoutPlanToEntity)
                 .collect(Collectors.toList());
         weeklyWorkoutPlan.setDailyWorkoutPlans(dailyWorkoutPlans);

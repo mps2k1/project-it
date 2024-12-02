@@ -49,7 +49,6 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
 
-        // Przekazanie żądania do kolejnego filtra
-        chain.doFilter(request, response);
+         chain.doFilter(request, response);
     }
 }

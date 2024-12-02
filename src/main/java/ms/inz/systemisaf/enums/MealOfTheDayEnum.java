@@ -1,9 +1,9 @@
 package ms.inz.systemisaf.enums;
 
 public enum MealOfTheDayEnum {
-    BREAKFAST("Śniadanie"),  // Śniadanie
-    LUNCH("Obiad"),          // Obiad
-    DINNER("Kolacja");       // Kolacja
+    BREAKFAST("Śniadanie"),
+    LUNCH("Obiad"),
+    DINNER("Kolacja");
 
     private final String displayName;
 

@@ -14,8 +14,7 @@ import java.util.stream.Collectors;
 
 public class MealMapper {
 
-    // Konwersja Meal na MealDto
-    public static MealDto mealToDto(Meal meal) {
+     public static MealDto mealToDto(Meal meal) {
         if (meal == null) {
             return null;
         }
@@ -27,8 +26,7 @@ public class MealMapper {
         return mealDto;
     }
 
-    // Konwersja MealDto na Meal
-    public static Meal mealToEntity(MealDto mealDto) {
+     public static Meal mealToEntity(MealDto mealDto) {
         if (mealDto == null) {
             return null;
         }
@@ -40,7 +38,6 @@ public class MealMapper {
         return meal;
     }
 
-    // Konwersja MealSession na MealSessionDto
     public static MealSessionDto mealSessionToDto(MealSession mealSession) {
         if (mealSession == null) {
             return null;
@@ -54,7 +51,6 @@ public class MealMapper {
         return mealSessionDto;
     }
 
-    // Konwersja MealSessionDto na MealSession
     public static MealSession mealSessionToEntity(MealSessionDto mealSessionDto) {
         if (mealSessionDto == null) {
             return null;
@@ -68,7 +64,6 @@ public class MealMapper {
         return mealSession;
     }
 
-    // Konwersja DailyMealPlan na DailyMealPlanDto
     public static DailyMealPlanDto dailyMealPlanToDto(DailyMealPlan dailyMealPlan) {
         if (dailyMealPlan == null) {
             return null;
@@ -85,7 +80,6 @@ public class MealMapper {
         return dailyMealPlanDto;
     }
 
-    // Konwersja DailyMealPlanDto na DailyMealPlan
     public static DailyMealPlan dailyMealPlanToEntity(DailyMealPlanDto dailyMealPlanDto) {
         if (dailyMealPlanDto == null) {
             return null;
@@ -102,7 +96,6 @@ public class MealMapper {
         return dailyMealPlan;
     }
 
-    // Konwersja WeeklyMealPlan na WeeklyMealPlanDto
     public static WeeklyMealPlanDto weeklyMealPlanToDto(WeeklyMealPlan weeklyMealPlan) {
         if (weeklyMealPlan == null) {
             return null;
@@ -120,7 +113,6 @@ public class MealMapper {
         return weeklyMealPlanDto;
     }
 
-    // Konwersja WeeklyMealPlanDto na WeeklyMealPlan
     public static WeeklyMealPlan weeklyMealPlanToEntity(WeeklyMealPlanDto weeklyMealPlanDto) {
         if (weeklyMealPlanDto == null) {
             return null;

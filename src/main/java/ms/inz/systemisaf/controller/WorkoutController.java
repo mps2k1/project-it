@@ -1,5 +1,7 @@
 package ms.inz.systemisaf.controller;
 import ms.inz.systemisaf.config.CustomUserDetails;
+import ms.inz.systemisaf.dto.CustomWorkoutPlanDto;
+import ms.inz.systemisaf.dto.CustomWorkoutPlanRequestDto;
 import ms.inz.systemisaf.dto.WeeklyWorkoutPlanDto;
 import ms.inz.systemisaf.services.WorkoutService;
 import org.springframework.http.HttpStatus;
@@ -55,6 +57,24 @@ public class WorkoutController {
             Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
             workoutService.setActiveWorkoutPlan(userId, workoutPlanId);
             return ResponseEntity.ok().build();
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+        }
+    }
+    @PostMapping("/custom-plan")
+    public ResponseEntity<CustomWorkoutPlanDto> assignWorkout(
+            @RequestBody CustomWorkoutPlanRequestDto requestDto,
+            Authentication authentication) {
+        Long trainerId = ((CustomUserDetails) authentication.getPrincipal()).getId();
+        CustomWorkoutPlanDto dto = workoutService.assignWorkout(requestDto, trainerId);
+        return ResponseEntity.ok(dto);
+    }
+    @GetMapping("/assigned")
+    public ResponseEntity<Object> getAssignedWorkout(Authentication authentication) {
+        try {
+            Long userId = ((CustomUserDetails) authentication.getPrincipal()).getId();
+            CustomWorkoutPlanDto assignedWorkout = workoutService.getAssignedWorkout(userId);
+            return ResponseEntity.ok(assignedWorkout);
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }

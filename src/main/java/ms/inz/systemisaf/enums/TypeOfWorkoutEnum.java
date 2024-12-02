@@ -1,8 +1,9 @@
 package ms.inz.systemisaf.enums;
 public enum TypeOfWorkoutEnum {
-    FBW("Full Body Workout"),   // Trening całego ciała
-    SPLIT("Split Training"),    // Trening dzielony
-    UPPERLOWER("Upper Lower");
+    FBW("Full Body Workout"),
+    SPLIT("Split Training"),
+    UPPERLOWER("Upper Lower"),
+    CUSTOM("Plan własny użytkownika");
 
     private final String displayName;
 

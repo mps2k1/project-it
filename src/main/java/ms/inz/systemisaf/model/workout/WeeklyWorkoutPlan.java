@@ -24,8 +24,8 @@ public class WeeklyWorkoutPlan {
     private TypeOfWorkoutEnum typeOfWorkout;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // Każdy plan należy do jednego użytkownika
+    private User user;
 
     @Column(name = "is_active", nullable = false)
-    private boolean isActive = false; // Domyślna wartość false
+    private boolean isActive = false;
 }

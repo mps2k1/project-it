@@ -1,4 +1,5 @@
 package ms.inz.systemisaf.controller;
+
 import jakarta.validation.Valid;
 import ms.inz.systemisaf.config.JwtUtil;
 import ms.inz.systemisaf.config.UserDetailsServiceImpl;
@@ -54,10 +55,16 @@ public class AuthController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
             UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
-            String token = jwtUtil.generateToken(userDetails);
+            String role = userDetails.getAuthorities()
+                    .stream()
+                    .findFirst()
+                    .map(Object::toString)
+                    .orElse(null);
+            String token = jwtUtil.generateToken(userDetails, role);
             return ResponseEntity.ok(token);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
     }
+
 }

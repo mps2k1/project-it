@@ -1,15 +1,14 @@
 package ms.inz.systemisaf.enums;
 public enum MuscleGroupEnum {
-    LEGS("nogi"),              // Nogi
-    BACK("plecy"),              // Plecy
+    LEGS("nogi"),
+    BACK("plecy"),
     GLUTES("pośladki"),
-    CHEST("klatka piersiowa"),  // Klatka piersiowa
-    SHOULDERS("barki"),         // Barki
-    ARMS("ramiona"),            // Ramiona (biceps, triceps)
+    CHEST("klatka piersiowa"),
+    SHOULDERS("barki"),
     BICEPS("biceps"),
     TRICEPS("triceps"),
-    CORE("mięśnie brzucha"),    // Mięśnie brzucha
-    FULL_BODY("całe ciało");    // Całe ciało (np. burpees)
+    CORE("mięśnie brzucha"),
+    FULL_BODY("całe ciało");
 
     private final String displayName;
 
