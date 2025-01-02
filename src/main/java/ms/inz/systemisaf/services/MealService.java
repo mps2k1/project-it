@@ -58,9 +58,9 @@ public class MealService {
             dailyPlan.setDayOfWeek(DayOfWeek.of((i % 7) + 1));
 
             List<MealSession> mealSessions = new ArrayList<>();
-            mealSessions.add(createMealSession(MealOfTheDayEnum.BREAKFAST, dietType, usedMeals));
-            mealSessions.add(createMealSession(MealOfTheDayEnum.LUNCH, dietType, usedMeals));
-            mealSessions.add(createMealSession(MealOfTheDayEnum.DINNER, dietType, usedMeals));
+            mealSessions.add(createMealSession(dailyPlan, MealOfTheDayEnum.BREAKFAST, dietType, usedMeals));
+            mealSessions.add(createMealSession(dailyPlan, MealOfTheDayEnum.LUNCH, dietType, usedMeals));
+            mealSessions.add(createMealSession(dailyPlan, MealOfTheDayEnum.DINNER, dietType, usedMeals));
 
             dailyPlan.setMealSessions(mealSessions);
             dailyMealPlans.add(dailyPlan);
@@ -70,7 +70,7 @@ public class MealService {
         return weeklyMealPlanRepository.save(mealPlan);
     }
 
-    private MealSession createMealSession(MealOfTheDayEnum mealType, DietTypeEnum dietType, Set<Meal> usedMeals) {
+    private MealSession createMealSession(DailyMealPlan dailyPlan, MealOfTheDayEnum mealType, DietTypeEnum dietType, Set<Meal> usedMeals) {
         List<Meal> meals = mealRepository.findByMealOfTheDayAndDietType(mealType, dietType);
         meals.removeAll(usedMeals);
         if (meals.isEmpty()) {
@@ -83,10 +83,10 @@ public class MealService {
 
         MealSession mealSession = new MealSession();
         mealSession.setMeals(Collections.singletonList(selectedMeal));
+        mealSession.setDailyMealPlan(dailyPlan); // Przypisanie DailyMealPlan
 
         return mealSession;
     }
-
     @Transactional
     public void setActiveMealPlan(Long userId, Long mealPlanId) {
         User user = userRepository.findById(userId)

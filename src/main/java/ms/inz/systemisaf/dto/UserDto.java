@@ -15,7 +15,6 @@ public class UserDto {
 
     private Long activeWorkoutPlanId;
     private Long activeMealPlanId;
-
     private List<Long> measurementIds;
     private List<Long> workoutPlanIds;
     private List<Long> weeklyMealPlanIds;

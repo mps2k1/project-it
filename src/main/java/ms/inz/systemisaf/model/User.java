@@ -65,7 +65,6 @@ public class User {
     @JoinColumn(name = "trainer_id")
     private User trainer;
 
-
     @OneToMany(mappedBy = "trainer")
     private Set<User> trainees = new HashSet<>();
 }

@@ -20,4 +20,8 @@ public class MealSession {
             inverseJoinColumns = @JoinColumn(name = "meal_id")
     )
     private List<Meal> meals;
+    @ManyToOne
+    @JoinColumn(name = "daily_meal_plan_id", nullable = false)
+    private DailyMealPlan dailyMealPlan;
+
 }

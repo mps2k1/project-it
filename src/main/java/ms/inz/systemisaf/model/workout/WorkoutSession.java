@@ -20,4 +20,8 @@ public class WorkoutSession {
             inverseJoinColumns = @JoinColumn(name = "exercise_id")
     )
     private List<Exercise> exercises;
+    @ManyToOne
+    @JoinColumn(name = "daily_workout_plan_id", nullable = false)
+    private DailyWorkoutPlan dailyWorkoutPlan;
+
 }

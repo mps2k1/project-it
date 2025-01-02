@@ -70,25 +70,32 @@ public class WorkoutService {
         for (int i = 0; i < days; i++) {
             DailyWorkoutPlan dailyPlan = new DailyWorkoutPlan();
             dailyPlan.setDayOfWeek(DayOfWeek.of((i % 7) + 1));
+            dailyPlan.setSessions(new ArrayList<>());
 
-            List<WorkoutSession> workoutSessions = new ArrayList<>();
+            WorkoutSession workoutSession;
             switch (type) {
                 case SPLIT:
-                    workoutSessions.add(createSplitSession(usedExercises, usedMuscleGroupsInWeek));
+                    workoutSession = createSplitSession(usedExercises, usedMuscleGroupsInWeek);
                     break;
                 case FBW:
-                    workoutSessions.add(createFullBodySession(usedExercises));
+                    workoutSession = createFullBodySession(usedExercises);
                     break;
                 case UPPERLOWER:
-                    workoutSessions.add(createUpperLowerSession(i, usedExercises));
+                    workoutSession = createUpperLowerSession(i, usedExercises);
                     break;
+                default:
+                    throw new IllegalArgumentException("Unknown workout type");
             }
 
-            dailyPlan.setSessions(workoutSessions);
+            workoutSession.setDailyWorkoutPlan(dailyPlan);
+            dailyPlan.getSessions().add(workoutSession);
+
+
             dailyWorkoutPlans.add(dailyPlan);
         }
 
         workoutPlan.setDailyWorkoutPlans(dailyWorkoutPlans);
+
         return weeklyWorkoutPlanRepository.save(workoutPlan);
     }
 

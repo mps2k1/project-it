@@ -374,4 +374,32 @@
                 referencedColumnNames="id"
                 constraintName="fk_users_assigned_custom_workout_plan_id"/>
     </changeSet>
+    <changeSet id="21-add-weekly-meal-plan-id-to-daily-meal-plans" author="systemisaf">
+        <addColumn tableName="daily_meal_plans">
+            <column name="weekly_meal_plan_id" type="BIGINT">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint
+                baseTableName="daily_meal_plans"
+                baseColumnNames="weekly_meal_plan_id"
+                referencedTableName="weekly_meal_plans"
+                referencedColumnNames="id"
+                constraintName="fk_daily_meal_plans_weekly_meal_plan_id"/>
+    </changeSet>
+    <changeSet id="22-add-daily-meal-plan-id-to-meal-sessions" author="systemisaf">
+        <addColumn tableName="meal_sessions">
+            <column name="daily_meal_plan_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <addForeignKeyConstraint
+                baseTableName="meal_sessions"
+                baseColumnNames="daily_meal_plan_id"
+                referencedTableName="daily_meal_plans"
+                referencedColumnNames="id"
+                constraintName="fk_meal_sessions_daily_meal_plan"/>
+    </changeSet>
 </databaseChangeLog>
